@@ -1,15 +1,14 @@
 import "./AppNavbar.css";
-import { useContext } from "react";
-import { UserInfoContext } from "../userInfo/UserInfoProvider";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { NavLink, useLocation } from "react-router-dom";
 import Image from "react-bootstrap/Image";
 import { AuthToken } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
+import userInfoHook from "../userInfo/UserInfoHook";
 
 const AppNavbar = () => {
   const location = useLocation();
-  const { authToken, clearUserInfo } = useContext(UserInfoContext);
+  const { authToken, clearUserInfo } = userInfoHook();
   const { displayInfoMessage, displayErrorMessage, clearLastInfoMessage } =
     useToastListener();
 
@@ -60,17 +59,16 @@ const AppNavbar = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Item>
-              <NavLink to="/feed">Feed</NavLink>
+              <NavLink to="/status">Status</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <NavLink to="/story">Story</NavLink>
+              <NavLink to="/users">Users</NavLink>
             </Nav.Item>
-            <Nav.Item>
-              <NavLink to="/following">Following</NavLink>
+              {/* <NavLink to="/following">Following</NavLink>
             </Nav.Item>
             <Nav.Item>
               <NavLink to="/followers">Followers</NavLink>
-            </Nav.Item>
+            </Nav.Item> */}
             <Nav.Item>
               <NavLink id="logout" onClick={logOut} to={location.pathname}>
                 Logout

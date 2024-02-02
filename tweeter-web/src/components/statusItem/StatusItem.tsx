@@ -6,7 +6,7 @@ interface Props {
   status: Status;
 }
 
-const Post = (props: Props) => {
+const StatusItem = (props: Props) => {
   const { navigateToUser } = useUserNavigationListener();
 
   return (
@@ -39,4 +39,4 @@ const Post = (props: Props) => {
   );
 };
 
-export default Post;
+export default StatusItem;

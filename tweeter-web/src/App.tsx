@@ -1,6 +1,4 @@
 import "./App.css";
-import { useContext } from "react";
-import { UserInfoContext } from "./components/userInfo/UserInfoProvider";
 import {
   BrowserRouter,
   Navigate,
@@ -12,13 +10,13 @@ import Login from "./components/authentication/login/Login";
 import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
-import FeedScroller from "./components/mainLayout/FeedScroller";
-import StoryScroller from "./components/mainLayout/StoryScroller";
-import { AuthToken, User, FakeData } from "tweeter-shared";
+import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
+import { AuthToken, User, FakeData, Status } from "tweeter-shared";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
+import userInfoHook from "./components/userInfo/UserInfoHook";
 
 const App = () => {
-  const { currentUser, authToken } = useContext(UserInfoContext);
+  const { currentUser, authToken } = userInfoHook();
 
   const isAuthenticated = (): boolean => {
     return !!currentUser && !!authToken;
@@ -59,27 +57,28 @@ const AuthenticatedRoutes = () => {
     return FakeData.instance.getPageOfUsers(lastItem, pageSize, user);
   };
 
+  const loadMoreStatuses = async (
+    authToken: AuthToken,
+    user: User,
+    pageSize: number,
+    lastItem: Status | null
+  ): Promise<[Status[], boolean]> => {
+    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+  };
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route index element={<Navigate to="/feed" />} />
-        <Route path="feed" element={<FeedScroller />} />
-        <Route path="story" element={<StoryScroller />} />
+        <Route path="status" element={<StatusItemScroller 
+          loadItems={loadMoreStatuses}
+          itemDescription="status"/>} 
+        />
         <Route
-          path="following"
+          path="users"
           element={
             <UserItemScroller
               loadItems={loadMoreFollowees}
               itemDescription="followees"
-            />
-          }
-        />
-        <Route
-          path="followers"
-          element={
-            <UserItemScroller
-              loadItems={loadMoreFollowers}
-              itemDescription="followers"
             />
           }
         />

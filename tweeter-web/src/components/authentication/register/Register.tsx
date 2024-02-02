@@ -1,13 +1,13 @@
 import "./Register.css";
 import "bootstrap/dist/css/bootstrap.css";
-import { useContext } from "react";
-import { UserInfoContext } from "../../userInfo/UserInfoProvider";
 import { ChangeEvent, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { Buffer } from "buffer";
 import useToastListener from "../../toaster/ToastListenerHook";
+import AuthenticationField from "../AuthenticationField";
+import userInfoHook from "../../userInfo/UserInfoHook";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -22,8 +22,24 @@ const Register = () => {
   rememberMeRef.current = rememberMe;
 
   const navigate = useNavigate();
-  const { updateUserInfo } = useContext(UserInfoContext);
+  const { updateUserInfo } = userInfoHook();
   const { displayErrorMessage } = useToastListener();
+
+  // const handleFirstNameChange = (firstName: string) => {
+  //   setFirstName(firstName);
+  // }
+
+  // const handleLastNameChange = (lastName: string) => {
+  //   setLastName(lastName);
+  // }
+
+  const handleAliasChange = (alias: string) => {
+    setAlias(alias);
+  }
+
+  const handlePasswordChange = (password: string) => {
+    setPassword(password);
+  }
 
   const checkSubmitButtonStatus = (): boolean => {
     return !firstName || !lastName || !alias || !password || !imageUrl;
@@ -125,27 +141,10 @@ const Register = () => {
           />
           <label htmlFor="lastNameInput">Last Name</label>
         </div>
-        <div className="form-floating">
-          <input
-            type="text"
-            className="form-control"
-            size={50}
-            id="aliasInput"
-            placeholder="name@example.com"
-            onChange={(event) => setAlias(event.target.value)}
-          />
-          <label htmlFor="aliasInput">Alias</label>
-        </div>
-        <div className="form-floating">
-          <input
-            type="password"
-            className="form-control"
-            id="passwordInput"
-            placeholder="Password"
-            onChange={(event) => setPassword(event.target.value)}
-          />
-          <label htmlFor="passwordInput">Password</label>
-        </div>
+        <AuthenticationField 
+          onAliasChange={handleAliasChange}
+          onPasswordChange={handlePasswordChange}
+        />
         <div className="form-floating mb-3">
           <input
             type="file"
