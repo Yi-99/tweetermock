@@ -59,16 +59,17 @@ const AppNavbar = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Item>
-              <NavLink to="/status">Status</NavLink>
+              <NavLink to="/feed">Feed</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <NavLink to="/users">Users</NavLink>
+              <NavLink to="/story">Story</NavLink>
             </Nav.Item>
-              {/* <NavLink to="/following">Following</NavLink>
+            <Nav.Item>
+              <NavLink to="/following">Following</NavLink>
             </Nav.Item>
             <Nav.Item>
               <NavLink to="/followers">Followers</NavLink>
-            </Nav.Item> */}
+            </Nav.Item>
             <Nav.Item>
               <NavLink id="logout" onClick={logOut} to={location.pathname}>
                 Logout

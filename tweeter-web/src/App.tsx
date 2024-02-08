@@ -37,26 +37,6 @@ const App = () => {
 };
 
 const AuthenticatedRoutes = () => {
-  const loadMoreFollowers = async (
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: User | null
-  ): Promise<[User[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfUsers(lastItem, pageSize, user);
-  };
-
-  const loadMoreFollowees = async (
-    authToken: AuthToken,
-    user: User,
-    pageSize: number,
-    lastItem: User | null
-  ): Promise<[User[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfUsers(lastItem, pageSize, user);
-  };
-
   const loadMoreStatuses = async (
     authToken: AuthToken,
     user: User,
@@ -69,16 +49,29 @@ const AuthenticatedRoutes = () => {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="status" element={<StatusItemScroller 
+        <Route path="feed" element={<StatusItemScroller 
           loadItems={loadMoreStatuses}
-          itemDescription="status"/>} 
+          itemDescription="feed"/>} 
+        />
+        <Route path="story" element={<StatusItemScroller 
+          loadItems={loadMoreStatuses}
+          itemDescription="story"/>} 
         />
         <Route
-          path="users"
+          path="following"
           element={
             <UserItemScroller
               loadItems={loadMoreFollowees}
               itemDescription="followees"
+            />
+          }
+        />
+        <Route
+          path="followers"
+          element={
+            <UserItemScroller
+              loadItems={loadMoreFollowees}
+              itemDescription="followers"
             />
           }
         />
