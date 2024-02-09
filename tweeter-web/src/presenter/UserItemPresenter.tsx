@@ -17,11 +17,11 @@ export abstract class UserItemPresenter {
     return this._view;
   }
 
-  protected get hasMoreItems(): boolean {
+  public get hasMoreItems(): boolean {
     return this._hasMoreItems;
   }
 
-  protected set moreItems(value: boolean) {
+  protected set hasMoreItems(value: boolean) {
     this._hasMoreItems = value;
   }
 

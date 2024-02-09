@@ -36,7 +36,7 @@ const UserItemScroller = (props: Props) => {
   const [presenter] = useState(props.presenterGenerator(listener));
 
   const loadMoreItems = async () => {
-    presenter.loadMoreItem(authToken!, displayedUser!);
+    presenter.loadMoreItems(authToken!, displayedUser!);
   }
 
   return (
@@ -45,7 +45,7 @@ const UserItemScroller = (props: Props) => {
         className="pr-0 mr-0"
         dataLength={items.length}
         next={loadMoreItems}
-        hasMore={this.presenter.hasMoreItems}
+        hasMore={presenter.hasMoreItems}
         loader={<h4>Loading...</h4>}
       >
         {items.map((item, index) => (
