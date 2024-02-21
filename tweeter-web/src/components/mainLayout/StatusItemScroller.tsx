@@ -44,27 +44,6 @@ const StatusItemScroller = (props: Props) => {
     presenter.loadMoreItems(authToken!, displayedUser!)
   }
 
-  // const loadMoreItems = async () => {
-  //   try {
-  //     if (hasMoreItems) {
-  //       let [newItems, hasMore] = await props.loadItems(
-  //         authToken!,
-  //         displayedUser!,
-  //         PAGE_SIZE,
-  //         lastItem
-  //       );
-
-  //       setHasMoreItems(hasMore);
-  //       setLastItem(newItems[newItems.length - 1]);
-  //       addItems(newItems);
-  //     }
-  //   } catch (error) {
-  //     displayErrorMessage(
-  //       `Failed to load feed items because of exception: ${error}`
-  //     );
-  //   }
-  // };
-
   const { navigateToUser } = useUserNavigationListener();
 
   return (

@@ -3,13 +3,17 @@ import "bootstrap/dist/css/bootstrap.css";
 import { ChangeEvent, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
-import { AuthToken, FakeData, User } from "tweeter-shared";
 import { Buffer } from "buffer";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthenticationField from "../AuthenticationField";
 import userInfoHook from "../../userInfo/UserInfoHook";
+import { RegisterView, RegisterPresenter } from "../../../presenter/RegisterPresenter";
 
-const Register = () => {
+interface Props {
+  presenterGenerator: (view: RegisterView) => RegisterPresenter;
+}
+
+const Register = (props: Props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [alias, setAlias] = useState("");
@@ -76,45 +80,57 @@ const Register = () => {
     }
   };
 
+  const listener: RegisterView = {
+    updateUserInfo: updateUserInfo,
+    navigate: navigate,
+    displayErrorMessage: displayErrorMessage
+  }
+
+  const [presenter] = useState(props.presenterGenerator(listener));
+
   const doRegister = async () => {
-    try {
-      let [user, authToken] = await register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes
-      );
+    presenter.doRegister(firstName, lastName, alias, password, imageBytes, rememberMeRef.current)
+  }
 
-      updateUserInfo(user, user, authToken, rememberMeRef.current);
-      navigate("/");
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to register user because of exception: ${error}`
-      );
-    }
-  };
+  // const doRegister = async () => {
+  //   try {
+  //     let [user, authToken] = await register(
+  //       firstName,
+  //       lastName,
+  //       alias,
+  //       password,
+  //       imageBytes
+  //     );
 
-  const register = async (
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-    userImageBytes: Uint8Array
-  ): Promise<[User, AuthToken]> => {
-    // Not neded now, but will be needed when you make the request to the server in milestone 3
-    let imageStringBase64: string =
-      Buffer.from(userImageBytes).toString("base64");
+  //     updateUserInfo(user, user, authToken, rememberMeRef.current);
+  //     navigate("/");
+  //   } catch (error) {
+  //     displayErrorMessage(
+  //       `Failed to register user because of exception: ${error}`
+  //     );
+  //   }
+  // };
 
-    // TODO: Replace with the result of calling the server
-    let user = FakeData.instance.firstUser;
+  // const register = async (
+  //   firstName: string,
+  //   lastName: string,
+  //   alias: string,
+  //   password: string,
+  //   userImageBytes: Uint8Array
+  // ): Promise<[User, AuthToken]> => {
+  //   // Not neded now, but will be needed when you make the request to the server in milestone 3
+  //   let imageStringBase64: string =
+  //     Buffer.from(userImageBytes).toString("base64");
 
-    if (user === null) {
-      throw new Error("Invalid registration");
-    }
+  //   // TODO: Replace with the result of calling the server
+  //   let user = FakeData.instance.firstUser;
 
-    return [user, FakeData.instance.authToken];
-  };
+  //   if (user === null) {
+  //     throw new Error("Invalid registration");
+  //   }
+
+  //   return [user, FakeData.instance.authToken];
+  // };
 
   const inputFieldGenerator = () => {
     return (
