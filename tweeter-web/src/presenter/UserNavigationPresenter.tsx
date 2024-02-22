@@ -15,7 +15,7 @@ export class UserNavigationPresenter {
     this.view = view;
   }
 
-  public async navigateToUser (event: React.MouseEvent, authToken: string, currentUser: User): Promise<void> {
+  public async navigateToUser (event: React.MouseEvent, authToken: AuthToken, currentUser: User): Promise<void> {
     event.preventDefault();
 
     try {
