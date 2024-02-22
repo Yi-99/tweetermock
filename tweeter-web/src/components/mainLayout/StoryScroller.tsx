@@ -23,7 +23,7 @@ const StoryScroller = () => {
   const addItems = (newItems: Status[]) =>
     setItems([...itemsReference.current, ...newItems]);
 
-  const { displayedUser, setDisplayedUser, currentUser, authToken } =
+  const { displayedUser, authToken } =
     userInfoHook();
 
   // Load initial items
