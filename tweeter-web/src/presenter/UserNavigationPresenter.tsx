@@ -1,18 +1,18 @@
 import { User, AuthToken } from "tweeter-shared";
 import { UserService } from "../model/service/UserService";
+import { Presenter, View } from "./Presenter";
 
-export interface UserNavigationView {
+export interface UserNavigationView extends View {
   displayErrorMessage: (message: string) => void;
   setDisplayedUser: (currentUser: User) => void;
 }
 
-export class UserNavigationPresenter {
+export class UserNavigationPresenter extends Presenter {
   private service: UserService;
-  private view: UserNavigationView;
 
   public constructor(view: UserNavigationView) {
+    super(view);
     this.service = new UserService();
-    this.view = view;
   }
 
   public async navigateToUser (event: React.MouseEvent, authToken: AuthToken, currentUser: User): Promise<void> {

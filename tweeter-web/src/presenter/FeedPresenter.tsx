@@ -12,24 +12,24 @@ export class FeedPresenter extends StatusItemPresenter {
     this.service = new StatusService();
   }
 
+  protected get view(): StatusItemView {
+    return super.view as StatusItemView;
+  }
+
   public async loadMoreItems(authToken: AuthToken, displayedUser: User) {
-    try {
+    this.doFailureReportOp(async () => {
       if (this.hasMoreItems) {
-        let [newItems, hasMore] = await this.service.loadMoreStatuses(
-          authToken!,
-          displayedUser!,
-          PAGE_SIZE,
+        let [ newItems, hasMore ] = await this.service.loadMoreStatuses(
+          authToken, 
+          displayedUser, 
+          PAGE_SIZE, 
           this.lastItem
         );
 
         this.hasMoreItems = hasMore;
-        this.lastItem = newItems[newItems.length - 1];
+        this.lastItem = newItems[newItems.length-1];
         this.view.addItems(newItems);
       }
-    } catch (error) {
-      this.view.displayErrorMessaage(
-        `Failed to load feed items because of exception: ${error}`
-      );
-    }
+    }, "load follwing items");
   }
 }

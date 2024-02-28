@@ -13,8 +13,12 @@ export class FollowersPresenter extends UserItemPresenter {
     this.service = new FollowService();
   }
 
+  protected get view(): UserItemView {
+    return super.view as UserItemView;
+  }
+
   public async loadMoreItems(authToken: AuthToken, user: User) {
-    try {
+    this.doFailureReportOp(async () => {
       if (this.hasMoreItems) {
         let [ newItems, hasMore ] = await this.service.loadMoreFollowers(authToken, user, PAGE_SIZE, this.lastItem);
 
@@ -22,10 +26,6 @@ export class FollowersPresenter extends UserItemPresenter {
         this.lastItem = newItems[newItems.length-1];
         this.view.addItems(newItems);
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to load followers because of exception: ${error}`
-      )
-    }
+    }, "load followers");
   }
 }

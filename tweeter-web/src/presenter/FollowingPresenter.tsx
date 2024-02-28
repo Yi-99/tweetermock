@@ -13,19 +13,19 @@ export class FollowingPresenter extends UserItemPresenter {
     this.service = new FollowService();
   }
 
+  protected get view(): UserItemView {
+    return super.view as UserItemView;
+  }
+  
   public async loadMoreItems(authToken: AuthToken, user: User) {
-    try {
+    this.doFailureReportOp(async () => {
       if (this.hasMoreItems) {
-        let [ newItems, hasMore ] = await this.service.loadMoreFollowees(authToken, user, PAGE_SIZE, this.lastItem);
+        let [ newItems, hasMore ] = await this.service.loadMoreFollowers(authToken, user, PAGE_SIZE, this.lastItem);
 
         this.hasMoreItems = hasMore;
-        this.lastItem = newItems[newItems.length - 1];
+        this.lastItem = newItems[newItems.length-1];
         this.view.addItems(newItems);
       }
-    } catch (error) {
-      this.view.displayErrorMessage(
-        `Failed to load followee because of exception: ${error}`
-      );
-    }
-  };
+    }, "load follwees");
+  }
 }
