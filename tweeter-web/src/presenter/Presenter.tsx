@@ -1,4 +1,5 @@
 export interface View {
+  setIsFollower(arg0: boolean): unknown;
   displayErrorMessage: (message: string, bootstrapClasses?: string | undefined) => void;
 }
 
