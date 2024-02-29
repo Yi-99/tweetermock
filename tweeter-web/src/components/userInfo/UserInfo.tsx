@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthToken, User } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
-import { UserInfoView, UserInfoPresenter } from "../../presenter/UserInfoPresenter";
+import { UserInfoPresenter } from "../../presenter/UserInfoPresenter";
+import { UserInfoView } from "../../presenter/InfoPresenter";
 
 const UserInfo = () => {
   const [isFollower, setIsFollower] = useState(false);

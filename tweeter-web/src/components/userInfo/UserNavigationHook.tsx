@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import { UserInfoContext } from "./UserInfoProvider";
 import useToastListener from "../toaster/ToastListenerHook";
-import { AuthToken, User, FakeData } from "tweeter-shared";
-import { UserNavigationPresenter, UserNavigationView } from "../../presenter/UserNavigationPresenter";
+import { UserNavigationPresenter} from "../../presenter/UserNavigationPresenter";
+import { UserNavigationView } from "../../presenter/NavigationPresenter";
 
 interface UserNavigateListener {
   navigateToUser: (event: React.MouseEvent) => Promise<void>;

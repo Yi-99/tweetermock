@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
-import { UserService } from "../model/service/UserService";
-import { Presenter, View } from "./Presenter";
+import { View } from "./Presenter";
+import { AuthenticationPresenter } from "./AuthenticationPresenter";
 
 export interface RegisterView extends View {
   updateUserInfo: (user: User, u: User, authToken: AuthToken, rememberMe: boolean) => void;
@@ -8,13 +8,10 @@ export interface RegisterView extends View {
   displayErrorMessage: (message: string) => void;
 }
 
-export class RegisterPresenter extends Presenter {
-  private service: UserService;
-
-  public constructor(view: RegisterView) {
-    super(view);
-    this.service = new UserService();
-  }
+export class RegisterPresenter extends AuthenticationPresenter {
+  // public constructor(view: RegisterView) {
+  //   super(view);
+  // }
 
   protected get view(): RegisterView {
     return super.view as RegisterView;
@@ -37,8 +34,7 @@ export class RegisterPresenter extends Presenter {
           imageBytes
         );
   
-        this.view.updateUserInfo(user, user, authToken, rememberMe);
-        this.view.navigate("/");
+        this.update(user, user, authToken, rememberMe);
       }, "register user");
     }
 }

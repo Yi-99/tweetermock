@@ -1,6 +1,6 @@
 import { AuthToken, User } from "tweeter-shared";
-import { UserService } from "../model/service/UserService";
-import { Presenter, View } from "./Presenter";
+import { View } from "./Presenter";
+import { AuthenticationPresenter } from "./AuthenticationPresenter";
 
 export interface LoginView extends View {
   updateUserInfo: (user: User, u: User, authToken: AuthToken, rememberMe: boolean) => void;
@@ -8,13 +8,11 @@ export interface LoginView extends View {
   displayErrorMessage: (message: string) => void;
 }
 
-export class LoginPresenter extends Presenter {
-  private service: UserService;
-
-  public constructor(view: LoginView) {
-    super(view);
-    this.service = new UserService();
-  }
+export class LoginPresenter extends AuthenticationPresenter {
+  // public constructor(view: LoginView) {
+  //   super(view);
+  //   this.service = new UserService();
+  // }
 
   protected get view(): LoginView {
     return super.view as LoginView;
@@ -29,13 +27,7 @@ export class LoginPresenter extends Presenter {
     this.doFailureReportOp(async () => {
       let [user, authToken] = await this.service.login(alias, password);
 
-      this.view.updateUserInfo(user, user, authToken, rememberMe);
-
-      if (!!originalUrl) {
-        this.view.navigate(originalUrl);
-      } else {
-        this.view.navigate("/");
-      }
+      this.update(user, user, authToken, rememberMe, originalUrl);
     }, "log user in");
   }
 }
