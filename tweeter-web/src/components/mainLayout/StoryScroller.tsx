@@ -2,10 +2,10 @@ import { AuthToken, FakeData, Status, User } from "tweeter-shared";
 import { useState, useRef, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-import Post from "../statusItem/Post";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserNavigationListener from "../userInfo/UserNavigationHook";
 import userInfoHook from "../userInfo/UserInfoHook";
+import StatusItem from "../statusItem/StatusItem";
 
 export const PAGE_SIZE = 10;
 
@@ -105,7 +105,7 @@ const StoryScroller = () => {
                     </h2>
                     {item.formattedDate}
                     <br />
-                    <Post status={item} />
+                    <StatusItem status={item} />
                   </div>
                 </div>
               </div>

@@ -1,18 +1,17 @@
-import { AuthToken, User } from "tweeter-shared";
-import { useState, useRef, useEffect } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import UserItem from "../userItem/UserItem";
+import { useEffect, useRef, useState } from "react";
 import useToastListener from "../toaster/ToastListenerHook";
 import userInfoHook from "../userInfo/UserInfoHook";
-import { UserItemView, UserItemPresenter } from "../../presenter/UserItemPresenter";
+import { PagedItemPresenter, PagedItemView } from "../../presenter/PagedItemPresenter";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-interface Props {
-  presenterGenerator: (view: UserItemView) => UserItemPresenter;
+export interface Props<T, U> {
+  presenterGenerator: (view: PagedItemView<T>) => PagedItemPresenter<T, U>;
+  itemComponentGenerator: (item: T) => JSX.Element;
 }
 
-const UserItemScroller = (props: Props) => {
+export const ItemScroller = <T,U>(props: Props<T,U>) => {
   const { displayErrorMessage } = useToastListener();
-  const [items, setItems] = useState<User[]>([]);
+  const [items, setItems] = useState<T[]>([]);
 
   // Required to allow the addItems method to see the current value of 'items'
   // instead of the value from when the closure was created.
@@ -27,8 +26,8 @@ const UserItemScroller = (props: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const listener: UserItemView = {
-    addItems: (newItems: User[]) => 
+  const listener: PagedItemView<T> = {
+    addItems: (newItems: T[]) => 
       setItems([...itemsReference.current, ...newItems]),
     displayErrorMessage: displayErrorMessage,
   }
@@ -38,7 +37,7 @@ const UserItemScroller = (props: Props) => {
   const loadMoreItems = async () => {
     presenter.loadMoreItems(authToken!, displayedUser!);
   }
-
+  
   return (
     <div className="container px-0 overflow-visible vh-100">
       <InfiniteScroll
@@ -53,12 +52,10 @@ const UserItemScroller = (props: Props) => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <UserItem value={item} />
+            {props.itemComponentGenerator(item)}
           </div>
         ))}
       </InfiniteScroll>
     </div>
-  );
-};
-
-export default UserItemScroller;
+  )
+}

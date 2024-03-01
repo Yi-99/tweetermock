@@ -4,6 +4,7 @@ import useUserNavigationListener from "../userInfo/UserNavigationHook";
 
 interface Props {
   status: Status;
+  navigateToUser: (event: React.MouseEvent) => Promise<void>;
 }
 
 const Post = (props: Props) => {
