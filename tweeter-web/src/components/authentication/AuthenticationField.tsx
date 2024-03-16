@@ -13,6 +13,7 @@ const AuthenticationField: React.FC<AuthenticationFieldProps> = ({ onAliasChange
           className="form-control"
           size={50}
           id="aliasInput"
+          aria-label="alias"
           placeholder="name@example.com"
           onChange={(event) => onAliasChange(event.target.value)}
         />
@@ -23,6 +24,7 @@ const AuthenticationField: React.FC<AuthenticationFieldProps> = ({ onAliasChange
           type="password"
           className="form-control"
           id="passwordInput"
+          aria-label="password"
           placeholder="Password"
           onChange={(event) => onPasswordChange(event.target.value)}
         />

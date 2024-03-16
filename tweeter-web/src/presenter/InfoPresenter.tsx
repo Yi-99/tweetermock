@@ -26,4 +26,12 @@ export abstract class InfoPresenter extends Presenter {
   protected get view(): UserInfoView {
     return super.view as UserInfoView;
   }
+
+  protected setFollowStatus(followersCount: number, followeesCount: number, isFollower: boolean): void {
+    this.view.clearLastInfoMessage();
+
+    this.view.setIsFollower(isFollower);
+    this.view.setFollowersCount(followersCount);
+    this.view.setFolloweesCount(followeesCount);
+  }
 }

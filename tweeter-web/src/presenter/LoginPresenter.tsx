@@ -9,11 +9,6 @@ export interface LoginView extends View {
 }
 
 export class LoginPresenter extends AuthenticationPresenter {
-  // public constructor(view: LoginView) {
-  //   super(view);
-  //   this.service = new UserService();
-  // }
-
   protected get view(): LoginView {
     return super.view as LoginView;
   }
@@ -21,13 +16,20 @@ export class LoginPresenter extends AuthenticationPresenter {
   public async doLogin(
     alias: string, 
     password: string, 
-    rememberMe: boolean, 
+    rememberMe: boolean = false, 
     originalUrl: string | undefined
   ) {
     this.doFailureReportOp(async () => {
       let [user, authToken] = await this.service.login(alias, password);
+      
+      let url: string;
+      if (!!originalUrl) {
+        url = originalUrl;
+      } else url = "/";
 
-      this.update(user, user, authToken, rememberMe, originalUrl);
+      console.log("URL:", url);
+
+      this.update(user, user, authToken, rememberMe, url);
     }, "log user in");
   }
 }

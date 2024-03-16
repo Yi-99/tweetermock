@@ -4,7 +4,6 @@ import { Presenter, View } from "./Presenter";
 
 
 export interface UserNavigationView extends View {
-  displayErrorMessage: (message: string) => void;
   setDisplayedUser: (currentUser: User) => void;
 }
 

@@ -1,53 +1,64 @@
 import "./PostStatus.css";
-import { useState } from "react";
-import { useContext } from "react";
-import { UserInfoContext } from "../userInfo/UserInfoProvider";
-import { AuthToken, Status } from "tweeter-shared";
+import { useState, useContext } from "react";
 import useToastListener from "../toaster/ToastListenerHook";
+import { PostStatusPresenter, PostStatusView } from "../../presenter/PostStatusPresenter";
+import userInfoHook from "../userInfo/UserInfoHook";
 
-const PostStatus = () => {
+interface Props {
+  presenterGenerator: (view: PostStatusView) => PostStatusPresenter;
+  presenter?: PostStatusPresenter;
+}
+
+const PostStatus = (props: Props) => {
   const { displayErrorMessage, displayInfoMessage, clearLastInfoMessage } =
     useToastListener();
 
-  const { currentUser, authToken } = useContext(UserInfoContext);
+  const { currentUser, authToken } = userInfoHook();
   const [post, setPost] = useState("");
 
+  const listener: PostStatusView = {
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    clearLastInfoMessage: clearLastInfoMessage,
+    setPost: setPost
+  }
+  
+  const [presenter] = useState(props.presenter ?? props.presenterGenerator(listener));
+
   const submitPost = async (event: React.MouseEvent) => {
-    event.preventDefault();
+    presenter.submitPost(event, post, currentUser, authToken);
+    // event.preventDefault();
 
-    try {
-      displayInfoMessage("Posting status...", 0);
+    // try {
+    //   displayInfoMessage("Posting status...", 0);
 
-      let status = new Status(post, currentUser!, Date.now());
+    //   let status = new Status(post, currentUser!, Date.now());
 
-      await postStatus(authToken!, status);
+    //   await postStatus(authToken!, status);
 
-      clearLastInfoMessage();
-      setPost("");
-      displayInfoMessage("Status posted!", 2000);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to post the status because of exception: ${error}`
-      );
-    }
+    //   clearLastInfoMessage();
+    //   setPost("");
+    //   displayInfoMessage("Status posted!", 2000);
+    // } catch (error) {
+    //   displayErrorMessage(
+    //     `Failed to post the status because of exception: ${error}`
+    //   );
+    // }
   };
 
-  const postStatus = async (
-    authToken: AuthToken,
-    newStatus: Status
-  ): Promise<void> => {
-    // Pause so we can see the logging out message. Remove when connected to the server
-    await new Promise((f) => setTimeout(f, 2000));
-
-    // TODO: Call the server to post the status
-  };
+  // const postStatus = async (
+  //   authToken: AuthToken,
+  //   newStatus: Status
+  // ): Promise<void> => {
+  //   presenter.postStatus(authToken, newStatus);
+  // };
 
   const clearPost = (event: React.MouseEvent) => {
-    event.preventDefault();
-    setPost("");
+    presenter.clearPost(event);
   };
 
   const checkButtonStatus: () => boolean = () => {
+    console.log("checking status...:", post, authToken, currentUser);
     return !post.trim() || !authToken || !currentUser;
   };
 
@@ -58,6 +69,7 @@ const PostStatus = () => {
           className="form-control"
           id="postStatusTextArea"
           rows={10}
+          aria-label="postText"
           placeholder="What's on your mind?"
           value={post}
           onChange={(event) => {
@@ -70,6 +82,7 @@ const PostStatus = () => {
           id="postStatusButton"
           className="btn btn-md btn-primary me-1"
           type="button"
+          aria-label="post"
           disabled={checkButtonStatus()}
           onClick={(event) => submitPost(event)}
         >
@@ -79,6 +92,7 @@ const PostStatus = () => {
           id="clearStatusButton"
           className="btn btn-md btn-secondary"
           type="button"
+          aria-label="clear"
           disabled={checkButtonStatus()}
           onClick={(event) => clearPost(event)}
         >
@@ -90,3 +104,7 @@ const PostStatus = () => {
 };
 
 export default PostStatus;
+function useUserInfo(): { currentUser: any; authToken: any; } {
+  throw new Error("Function not implemented.");
+}
+

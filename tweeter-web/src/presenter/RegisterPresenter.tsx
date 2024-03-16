@@ -5,7 +5,6 @@ import { AuthenticationPresenter } from "./AuthenticationPresenter";
 export interface RegisterView extends View {
   updateUserInfo: (user: User, u: User, authToken: AuthToken, rememberMe: boolean) => void;
   navigate: (originalUrl: string) => void;
-  displayErrorMessage: (message: string) => void;
 }
 
 export class RegisterPresenter extends AuthenticationPresenter {
@@ -34,7 +33,7 @@ export class RegisterPresenter extends AuthenticationPresenter {
           imageBytes
         );
   
-        this.update(user, user, authToken, rememberMe);
+        this.update(user, user, authToken, rememberMe, "/");
       }, "register user");
     }
 }

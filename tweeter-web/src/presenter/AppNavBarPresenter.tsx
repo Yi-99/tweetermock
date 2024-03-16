@@ -3,26 +3,23 @@ import { AuthToken } from "tweeter-shared";
 import { MessageView, Presenter } from "./Presenter";
 
 export interface AppNavBarView extends MessageView {
-  displayInfoMessage: (
-    message: string, 
-    duration: number, 
-    bootstrapClasses?: string | undefined
-  ) => void;
-  displayErrorMessage: (message: string) => void;
-  clearLastInfoMessage: () => void;
   clearUserInfo: () => void;
 }
 
 export class AppNavBarPresenter extends Presenter {
-  private service: UserService;
+  private _service: UserService;
 
   public constructor(view: AppNavBarView) {
     super(view);
-    this.service = new UserService();
+    this._service = new UserService();
   }
 
   protected get view(): AppNavBarView {
     return super.view as AppNavBarView;
+  }
+
+  public get service(): UserService {
+    return this._service;
   }
 
   public async logOut (authToken: AuthToken) {

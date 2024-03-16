@@ -23,13 +23,9 @@ export abstract class AuthenticationPresenter extends Presenter {
     return super.view as AuthenticationView;
   }
 
-  public async update(user: User, u: User, authToken: AuthToken, rememberMe: boolean, originalUrl?: string) {
+  public async update(user: User, u: User, authToken: AuthToken, rememberMe: boolean, originalUrl: string) {
     this.view.updateUserInfo(user, u, authToken, rememberMe);
 
-    if (!!originalUrl) {
-      this.view.navigate(originalUrl);
-    } else {
-      this.view.navigate("/");
-    }
+    this.view.navigate(originalUrl);
   }
 }

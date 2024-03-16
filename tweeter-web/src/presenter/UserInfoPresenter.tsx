@@ -1,23 +1,7 @@
 import { User, AuthToken } from "tweeter-shared";
 import { InfoPresenter, UserInfoView } from "./InfoPresenter";
 
-// export interface UserInfoView extends MessageView {
-//   setIsFollowerStatus: (authToken: AuthToken, currentUser: User, displayedUser: User) => void;
-//   setIsFollower: (isFollower: boolean) => void;
-//   setFollowersCount: (count: number) => void;
-//   setFolloweesCount: (count: number) => void;
-//   unfollowDisplayedUser: (event: React.MouseEvent, authToken: AuthToken, displayedUser: User) => void;
-//   followDisplayedUser: (event: React.MouseEvent, authToken: AuthToken, displayedUser: User) => void;
-// }
-
 export class UserInfoPresenter extends InfoPresenter {
-  // private service: FollowService;
-
-  // public constructor (view: UserInfoView) {
-  //   super(view);
-  //   // this.service = new FollowService();
-  // }
-
   protected get view(): UserInfoView {
     return super.view as UserInfoView;
   }
@@ -70,11 +54,7 @@ export class UserInfoPresenter extends InfoPresenter {
         displayedUser!
       );
 
-      this.view.clearLastInfoMessage();
-
-      this.view.setIsFollower(false);
-      this.view.setFollowersCount(followersCount);
-      this.view.setFolloweesCount(followeesCount);
+      this.setFollowStatus(followersCount, followeesCount, false);
     },'unfollow user');
   }
 
@@ -93,12 +73,7 @@ export class UserInfoPresenter extends InfoPresenter {
         displayedUser!
       );
 
-      this.view.clearLastInfoMessage();
-
-      this.view.setIsFollower(true);
-      this.view.setFollowersCount(followersCount);
-      this.view.setFolloweesCount(followeesCount);
+      this.setFollowStatus(followersCount, followeesCount, true);
     }, 'follow user');
   };
-  
 }
