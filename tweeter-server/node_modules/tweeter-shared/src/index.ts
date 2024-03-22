@@ -3,8 +3,8 @@ export { PostSegment, Type } from "./model/domain/PostSegment";
 export { Status } from "./model/domain/Status";
 export { User } from "./model/domain/User";
 export { AuthToken } from "./model/domain/AuthToken";
-export { TweeterResponse, AuthenticateResponse } from "./model/net/Response";
-export { LoginRequest, RegisterRequest } from "./model/net/Request";
+export { Response, AuthenticateResponse } from "./model/net/Response";
+export { Request, LoginRequest, RegisterRequest } from "./model/net/Request";
 // All classes that should be avaialble to other modules need to exported here. export * does not work when 
 // uploading to lambda. Instead we have to list each export.
 export { FakeData } from "./util/FakeData";

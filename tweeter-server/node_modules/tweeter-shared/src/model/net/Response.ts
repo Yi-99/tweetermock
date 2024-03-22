@@ -1,7 +1,7 @@
 import { AuthToken } from "../domain/AuthToken";
 import { User } from "../domain/User";
 
-export class TweeterResponse {
+export class Response {
   private _success: boolean;
   private _message: string | null;
 
@@ -19,12 +19,20 @@ export class TweeterResponse {
   }
 }
 
+export class LoginResponse extends Response {
+
+}
+
+export class RegisterResponse extends Response {
+  
+}
+
 interface ResponseJson {
   _success: boolean;
   _message: string;
 }
 
-export class AuthenticateResponse extends TweeterResponse {
+export class AuthenticateResponse extends Response {
   private _user: User;
   private _token: AuthToken;
 

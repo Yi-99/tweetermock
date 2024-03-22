@@ -1,5 +1,6 @@
-import { AuthenticateResponse, LoginRequest } from "tweeter-shared";
+import { AuthenticateResponse, LoginRequest, RegisterRequest } from "tweeter-shared";
 import { ClientCommunicator } from "./ClientCommunicator";
+import { FollowRequest, UnfollowRequest } from "tweeter-shared/dist/model/net/Request";
 
 export class ServerFacade {
 
@@ -23,8 +24,15 @@ export class ServerFacade {
 
   async follow(request: FollowRequest): Promise<AuthenticateResponse> {
     const endpoint = "/service/follow";
-    const response = JSON = await this.clientCommunicator.doPost<FollowRequest>(request, endpoint);
+    const response = JSON = await this.clientCommunicator.doUpdate<FollowRequest>(request, endpoint);
 
+    return AuthenticateResponse.fromJson(response);
+  }
+
+  async unfollow(request: UnfollowRequest): Promise<AuthenticateResponse> {
+    const endpoint = "/service/unfollow";
+    const response = JSON = await this.clientCommunicator.doUpdate<UnfollowRequest>(request, endpoint);
+  
     return AuthenticateResponse.fromJson(response);
   }
 }

@@ -1,7 +1,7 @@
 import { AuthToken } from "../domain/AuthToken";
 import { User } from "../domain/User";
 
-export class LoginRequest {
+export abstract class Request {
   username: string;
   password: string;
 
@@ -11,13 +11,24 @@ export class LoginRequest {
   }
 }
 
-export class RegisterRequest {
-  username: string;
-  password: string;
-
+export class LoginRequest extends Request{
   constructor(username: string, password: string) {
-    this.username = username;
-    this.password = password;
+    super(username, password);
+  }
+}
+
+export class RegisterRequest extends Request {
+  firstName: string;
+  lastName: string;
+  imageBytes: Uint8Array;
+  rememberMe: boolean;
+
+  constructor(firstName: string, lastName: string, alias: string, password: string, imageBytes: Uint8Array, rememberMe: boolean) {
+    super(alias, password);
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.imageBytes = imageBytes;
+    this.rememberMe = rememberMe;
   }
 }
 

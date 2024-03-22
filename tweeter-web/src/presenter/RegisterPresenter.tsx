@@ -32,7 +32,7 @@ export class RegisterPresenter extends AuthenticationPresenter {
           password,
           imageBytes
         );
-  
+
         this.update(user, user, authToken, rememberMe, "/");
       }, "register user");
     }

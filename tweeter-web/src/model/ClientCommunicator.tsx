@@ -1,4 +1,4 @@
-import { LoginRequest } from "tweeter-shared";
+import { Request } from "tweeter-shared";
 
 export class ClientCommunicator {
   private SERVER_URL: string;
@@ -6,7 +6,7 @@ export class ClientCommunicator {
     this.SERVER_URL = SERVER_URL;
   }
 
-  async doPost<T extends TweeterRequest>(req: T, endpoint: string): Promise<JSON> {
+  async doPost<T extends Request>(req: T, endpoint: string): Promise<JSON> {
     const url = this.SERVER_URL + endpoint;
     const request = {
       method: "post",
@@ -33,7 +33,7 @@ export class ClientCommunicator {
     }
   }
 
-  async doGet<T extends TweeterRequest>(req: T, endpoint: string): Promise<JSON> {
+  async doGet<T extends Request>(req: T, endpoint: string): Promise<JSON> {
     const url = this.SERVER_URL + endpoint;
     const request = {
       method: "get",
@@ -59,7 +59,7 @@ export class ClientCommunicator {
     }
   }
 
-  async doDelete<T extends TweeterRequest>(req: T, endpoint: string): Promise<JSON> {
+  async doDelete<T extends Request>(req: T, endpoint: string): Promise<JSON> {
     const url = this.SERVER_URL + endpoint;
     const request = {
       method: "delete",
@@ -85,7 +85,7 @@ export class ClientCommunicator {
     }
   }
 
-  async doUpdate<T extends TweeterRequest>(req: T, endpoint: string): Promise<JSON> {
+  async doUpdate<T extends Request>(req: T, endpoint: string): Promise<JSON> {
     const url = this.SERVER_URL + endpoint;
     const request = {
       method: "put",
